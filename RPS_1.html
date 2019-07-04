@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Rock, Paper, Scissors</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        
+        <title>Hello, play games!</title>
+    </head>
+    
+    <body>
+    <div class="jumbotron">
+        <div class="container">  
+            <h2 class="display-4">Hello, Let's Play Rock, Scissors, Paper! </h2>
+            <br>
+            <H3 class="text-center">Please click on one of the icons</H3>
+</div>
+    </div>  
+        
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-3 ">
+                <p>Rock</p>
+                <a id="rock"><img id="rockImage" src="img/rock.jpg" class="img-fluid"></a>
+            </div>
+
+            <div class="col-sm-3">
+                <p>Scissors</p>
+                <a id="scissors"><img id="scissorsImage" src="img/scissors.JPG" class="img-fluid" ></a>
+            </div>
+
+            <div class="col-sm-3">
+                <p>Paper</p>
+                <a id="paper"><img id="paperImage" src="img/paper.JPG" class="img-fluid"></a>
+            </div>
+
+            <div class="col-sm-3">
+                <p>Computer chose</p>
+                <img id="computerChoiceImage" src="" class="img-fluid">
+            </div>         
+        </div>
+    </div>        
+        
+    <div class="container" >
+        <br>
+        <h2>The result is...  </h2>
+        <br>
+        <div class="well text-center py-3 px-md-5"><h2 id ="colorResult" style="background-color:#E8E8E8;"><span id ="updateResult" > </span></h2> 
+        <br>
+        <button class="btn btn-outline-success btn-lg center-block" type="button"id="startNewGame">Start new game</button></div> 
+    </div>
+    <main role="main" class="container">
+      <h3 class="mt-5 text-center">Thank you for coming</h3>
+      <p class="text-center">Back to <a href="http://localhost/Exercise16/public_html/RPS.html">the default game</a></p>
+    </main>  
+        
+<!-- Footer -->
+<footer class="page-footer">
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2019 Copyright: Gabriella and Keiko  </div>
+</footer>
+<!-- Footer -->   
+        
+    <script>
+        function startNewGame(){
+            document.getElementById("rockImage").src = "img/rock.JPG";
+            document.getElementById("scissorsImage").src = "img/scissors.JPG";
+            document.getElementById("paperImage").src = "img/paper.JPG"; 
+            document.getElementById("computerChoiceImage").src = ""; 
+            document.getElementById("colorResult").style = "background-color:#E8E8E8";
+            document.getElementById("updateResult").innerHTML = "";
+        }    
+        
+        function hideImages(result){  
+            if (result == 'R'){
+                document.getElementById("scissorsImage").src = "";
+                document.getElementById("paperImage").src = "";
+            }
+            else if (result == 'S'){
+                document.getElementById("rockImage").src = "";
+                document.getElementById("paperImage").src = "";
+            }
+            else if (result == 'P'){
+                document.getElementById("rockImage").src = "";
+                document.getElementById("scissorsImage").src = "";
+            }
+        }
+        
+        function setComputerSelection(result){  
+            if (result == 'Rock'){
+                document.getElementById("computerChoiceImage").src = "img/rock.JPG";
+            }
+            else if (result == 'Scissors'){
+                document.getElementById("computerChoiceImage").src = "img/scissors.JPG";
+            }
+            else if (result == 'Paper'){
+                document.getElementById("computerChoiceImage").src = "img/paper.JPG";        
+            }
+           else if (result == 'Paper'){
+                document.getElementById("computerChoiceImage").src = "img/paper.JPG";        
+            }
+        }
+        
+        function changeResultColor(result){  
+            if (result == 'Win'){
+                document.getElementById("colorResult").style = "background-color:#A7FFF6";
+            }
+            else if (result == 'Lost'){
+                document.getElementById("colorResult").style = "background-color:#F1DEDE";
+            }
+            else if (result == 'Draw'){
+                document.getElementById("colorResult").style = "background-color:#FFEE93";
+            }
+        }        
+        function play(strChoice){
+            document.getElementById("computerChoiceImage").src = "";
+            hideImages(strChoice);
+            document.getElementById("updateResult").innerHTML = "Computer is thinking hard......"
+            
+            var xhttp ;
+             if (strChoice.length == 0){
+                 document.getElementById("updateResult").innerHTML = "";
+                 return;   
+             }
+             xhttp = new XMLHttpRequest();
+             xhttp.onreadystatechange = function(){
+                 if (this.readyState == 4 && this.status == 200){
+                    var res = this.responseText.split(",");
+                    setComputerSelection(res[1]);
+                    document.getElementById("updateResult").innerHTML = res[0];
+                    changeResultColor(res[0]);
+                }
+            };
+            xhttp.open("GET", "GameFunctions_1.php?choice="+strChoice, true);
+            xhttp.send();   
+        } 
+    
+    document.getElementById("rock").addEventListener("click", function(){
+        play("R");
+    });
+    document.getElementById("paper").addEventListener("click", function(){
+        play("P");
+    });
+    document.getElementById("scissors").addEventListener("click", function(){
+        play("S");
+    });    
+    document.getElementById("startNewGame").addEventListener("click", function(){
+        startNewGame();
+    });  
+
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    
+    </body>
+  
+</html>
